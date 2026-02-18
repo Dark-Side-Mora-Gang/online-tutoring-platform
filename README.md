@@ -1,49 +1,107 @@
 # online-tutoring-platform
 
 ```
-tutoring-platform/
+online-tutoring-platform/
 │
-├── backend/                    # All microservices + API Gateway
-│   ├── api-gateway/            # Single entry point, route traffic
-│   │   ├── src/
-│   │   │   ├── main.ts
-│   │   │   ├── app.module.ts
-│   │   │   ├── config/         # Redis, rate-limit, CORS, etc.
-│   │   │   └── middlewares/
-│   │   └── Dockerfile
-│   │
-│   ├── auth-service/           # User auth + JWT + roles
-│   │   ├── src/
-│   │   │   ├── main.ts
-│   │   │   ├── auth/
-│   │   │   ├── users/
-│   │   │   └── prisma/
-│   │   └── Dockerfile
-│   │
-│   ├── tutor-service/          # Tutor profiles, availability, ratings
-│   │   ├── src/
-│   │   │   ├── tutor/
-│   │   │   ├── availability/
-│   │   │   └── search/         # Elasticsearch integration
-│   │   └── Dockerfile
-│   │
-│   ├── booking-service/        # Session booking & management
-│   │   ├── src/
-│   │   │   ├── booking/
-│   │   │   └── events/
-│   │   └── Dockerfile
-│   │
-│   ├── payment-service/        # Stripe / Payment handling
-│   │   ├── src/
-│   │   │   ├── payment/
-│   │   │   └── stripe/
-│   │   └── Dockerfile
-│   │
-│   └── video-session-service/  # Jitsi/Zoom integration
-│       ├── src/
-│       │   ├── video/
-│       │   └── provider/
-│       └── Dockerfile
+├── backend/
+│    │
+│    ├── api-gateway/
+│    │   ├── src/
+│    │   │   ├── main.ts                  # Bootstrap NestJS app
+│    │   │   ├── app.module.ts            # Root module
+│    │   │   ├── config/                  # Config for Redis, CORS, rate-limiter, etc.
+│    │   │   │   ├── redis.config.ts
+│    │   │   │   └── gateway.config.ts
+│    │   │   ├── modules/                 # Feature modules (Auth, Tutor, Booking, Payment, Video)
+│    │   │   │   ├── auth.module.ts
+│    │   │   │   ├── tutor.module.ts
+│    │   │   │   ├── booking.module.ts
+│    │   │   │   ├── payment.module.ts
+│    │   │   │   └── video.module.ts
+│    │   │   ├── guards/                  # Global JWT guard
+│    │   │   ├── interceptors/            # Logging, response formatting
+│    │   │   └── middlewares/             # Rate limiting, request logging
+│    │   └── Dockerfile
+│    │
+│    ├── auth-service/
+│    │   ├── src/
+│    │   │   ├── main.ts
+│    │   │   ├── app.module.ts
+│    │   │   ├── auth/                     # Auth module
+│    │   │   │   ├── auth.controller.ts
+│    │   │   │   ├── auth.service.ts
+│    │   │   │   ├── jwt.strategy.ts
+│    │   │   │   ├── auth.module.ts
+│    │   │   │   └── dto/
+│    │   │   ├── users/                    # User module
+│    │   │   │   ├── users.service.ts
+│    │   │   │   ├── users.repository.ts
+│    │   │   │   └── users.module.ts
+│    │   │   ├── prisma/                   # DB access
+│    │   │   │   ├── prisma.module.ts
+│    │   │   │   └── schema.prisma
+│    │   │   └── redis/
+│    │   │       └── redis.module.ts       # Session / token storage
+│    │   └── Dockerfile
+│    │
+│    ├── tutor-service/
+│    │   ├── src/
+│    │   │   ├── main.ts
+│    │   │   ├── app.module.ts
+│    │   │   ├── tutor/
+│    │   │   │   ├── tutor.controller.ts
+│    │   │   │   ├── tutor.service.ts
+│    │   │   │   └── dto/
+│    │   │   ├── availability/
+│    │   │   │   └── availability.service.ts
+│    │   │   ├── search/
+│    │   │   │   ├── elastic.service.ts
+│    │   │   │   └── elastic.module.ts
+│    │   │   └── prisma/
+│    │   │       └── schema.prisma
+│    │   └── Dockerfile
+│    │
+│    ├── booking-service/
+│    │   ├── src/
+│    │   │   ├── main.ts
+│    │   │   ├── app.module.ts
+│    │   │   ├── booking/
+│    │   │   │   ├── booking.controller.ts
+│    │   │   │   ├── booking.service.ts
+│    │   │   │   └── dto/
+│    │   │   ├── events/                   # RabbitMQ events / listeners
+│    │   │   │   └── booking.events.ts
+│    │   │   └── prisma/
+│    │   │       └── schema.prisma
+│    │   └── Dockerfile
+│    │
+│    ├── payment-service/
+│    │   ├── src/
+│    │   │   ├── main.ts
+│    │   │   ├── app.module.ts
+│    │   │   ├── payment/
+│    │   │   │   ├── payment.controller.ts
+│    │   │   │   ├── payment.service.ts
+│    │   │   │   └── dto/
+│    │   │   ├── stripe/
+│    │   │   │   └── stripe.module.ts
+│    │   │   └── prisma/
+│    │   │       └── schema.prisma
+│    │   └── Dockerfile
+│    │
+│    └── video-session-service/
+│        ├── src/
+│        │   ├── main.ts
+│        │   ├── app.module.ts
+│        │   ├── video/
+│        │   │   ├── video.controller.ts
+│        │   │   ├── video.service.ts
+│        │   │   └── dto/
+│        │   └── provider/
+│        │       ├── jitsi.provider.ts
+│        │       └── zoom.provider.ts
+│        └── Dockerfile
+│
 │
 ├── libs/                       # Shared code across services
 │   ├── common/                  # DTOs, Guards, Decorators, Interceptors, Filters, Enums
