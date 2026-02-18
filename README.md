@@ -89,6 +89,30 @@ online-tutoring-platform/
 │    │   │       └── schema.prisma
 │    │   └── Dockerfile
 │    │
+│    ├── notification-service/
+│    │   ├── src/
+│    │   │   ├── main.ts
+│    │   │   ├── app.module.ts
+│    │   │   ├── notification/
+│    │   │   │   ├── notification.controller.ts
+│    │   │   │   ├── notification.service.ts
+│    │   │   │   └── dto/
+│    │   │   └── prisma/
+│    │   │       └── schema.prisma
+│    │   └── Dockerfile
+│    │
+│    ├── review-service/
+│    │   ├── src/
+│    │   │   ├── main.ts
+│    │   │   ├── app.module.ts
+│    │   │   ├── review/
+│    │   │   │   ├── review.controller.ts
+│    │   │   │   ├── review.service.ts
+│    │   │   │   └── dto/
+│    │   │   └── prisma/
+│    │   │       └── schema.prisma
+│    │   └── Dockerfile
+│    │
 │    └── video-session-service/
 │        ├── src/
 │        │   ├── main.ts
