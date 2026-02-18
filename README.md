@@ -1,7 +1,7 @@
 # online-tutoring-platform
 
 ```
-tutoring-platform/
+oneline-tutoring-platform/
 │
 ├── backend/                    # All microservices + API Gateway
 │   ├── api-gateway/            # Single entry point, route traffic
